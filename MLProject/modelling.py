@@ -44,10 +44,12 @@ with mlflow.start_run():
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
 
-    # log metric
     mlflow.log_metric("accuracy", acc)
 
-    # 🔥 WAJIB UNTUK DOCKER
-    mlflow.sklearn.log_model(model, "model")
+    # 🔥 SIMPAN MODEL DENGAN FORMAT MLFLOW
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path="model"
+    )
 
 print("Training selesai tanpa error")
