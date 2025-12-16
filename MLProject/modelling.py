@@ -1,11 +1,11 @@
 import os
 import mlflow
+import mlflow.sklearn
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
-import joblib
 
 # ======================
 # PATH DATASET (AMAN)
@@ -44,10 +44,10 @@ with mlflow.start_run():
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
 
+    # log metric
     mlflow.log_metric("accuracy", acc)
 
-    joblib.dump(model, "model.joblib")
-    mlflow.log_artifact("model.joblib")
+    # 🔥 WAJIB UNTUK DOCKER
+    mlflow.sklearn.log_model(model, "model")
 
-
-print(" Training selesai tanpa error")
+print("Training selesai tanpa error")
