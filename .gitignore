@@ -1,0 +1,17 @@
+# Virtual Environment
+venv/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Model artifacts
+model.joblib
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
