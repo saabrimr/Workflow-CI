@@ -16,15 +16,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install MLflow
         run: |
-          pip install "mlflow<3"
+          pip install "mlflow<3" scikit-learn pandas
 
-      - name: Build Docker Image using MLflow Project
+      # 🔥 TRAIN MODEL VIA MLFLOW PROJECT
+      - name: Run MLflow Project
         run: |
-          mlflow build-docker MLProject \
+          mlflow run MLProject --env-manager=local
+
+      # 🔥 BUILD DOCKER IMAGE (TANPA RUN_ID!)
+      - name: Build Docker image using MLflow
+        run: |
+          mlflow models build-docker \
+            --model-uri runs:/$(ls mlruns/0 | grep -v meta.yaml | head -n 1)/model \
             --name docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg
 
       - name: Login to Docker Hub
@@ -33,6 +40,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push Docker Image
+      - name: Push Docker image
         run: |
           docker push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg
