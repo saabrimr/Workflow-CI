@@ -20,9 +20,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r MLProject/requirements.txt
+          pip install -r requirements.txt
+          pip install mlflow
 
-      - name: Train model with MLflow
+      - name: Train ML model
         run: |
           python MLProject/modelling.py
 
@@ -32,10 +33,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker Image
+      - name: Build Docker image
         run: |
           docker build -t docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg .
 
-      - name: Push Docker Image
+      - name: Push Docker image
         run: |
           docker push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg
