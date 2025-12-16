@@ -20,7 +20,7 @@ jobs:
 
       - name: Install MLflow
         run: |
-          pip install mlflow<3
+          pip install "mlflow<3"
 
       - name: Build Docker Image using MLflow Project
         run: |
