@@ -1,4 +1,4 @@
-name: GiziBalita_LogReg_v1
+name: GiziBalita_LogReg
 
 conda_env: conda.yaml
 
