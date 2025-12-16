@@ -18,21 +18,39 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install MLflow
+      - name: Install dependencies
         run: |
-          pip install "mlflow<3"
+          pip install "mlflow<3" pandas scikit-learn joblib
 
-      - name: Build Docker Image using MLflow Project
+      # =========================
+      # 1️⃣ TRAIN MODEL (MLflow)
+      # =========================
+      - name: Run MLflow Project
         run: |
-          mlflow build-docker MLProject \
-            --name docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg
+          mlflow run MLProject --env-manager local
 
+      # =========================
+      # 2️⃣ LOGIN DOCKER HUB
+      # =========================
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push Docker Image
+      # =========================
+      # 3️⃣ BUILD DOCKER IMAGE
+      # =========================
+      - name: Build Docker image using MLflow
+        run: |
+          RUN_ID=$(ls mlruns/0 | tail -n 1)
+          mlflow models build-docker \
+            --model-uri runs:/0/$RUN_ID/model \
+            --name docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg
+
+      # =========================
+      # 4️⃣ PUSH DOCKER IMAGE
+      # =========================
+      - name: Push Docker image
         run: |
           docker push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/gizibalita-logreg
