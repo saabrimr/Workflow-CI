@@ -1,11 +1,13 @@
 name: gizi-balita-env
+
 channels:
-  - defaults
+  - conda-forge
+
 dependencies:
   - python=3.10
   - pip
   - pip:
-      - mlflow
+      - mlflow<3
       - pandas
       - scikit-learn
       - joblib

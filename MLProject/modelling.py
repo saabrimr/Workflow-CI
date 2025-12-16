@@ -1,13 +1,25 @@
+import os
 import mlflow
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 import joblib
 
-# Load dataset
-df = pd.read_csv("data_preprocessed.csv")
+# ======================
+# PATH DATASET (AMAN)
+# ======================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(BASE_DIR, "data_preprocessed.csv")
+
+if not os.path.exists(DATA_PATH):
+    raise FileNotFoundError(f"Dataset tidak ditemukan di: {DATA_PATH}")
+
+# ======================
+# LOAD DATA
+# ======================
+df = pd.read_csv(DATA_PATH)
 
 X = df.drop(columns=["Status Gizi"])
 y = df["Status Gizi"]
@@ -22,6 +34,9 @@ scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+# ======================
+# TRAIN
+# ======================
 with mlflow.start_run():
     model = LogisticRegression(max_iter=500)
     model.fit(X_train, y_train)
@@ -33,3 +48,6 @@ with mlflow.start_run():
 
     joblib.dump(model, "model.joblib")
     mlflow.log_artifact("model.joblib")
+
+
+print(" Training selesai tanpa error")
