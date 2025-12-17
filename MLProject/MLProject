@@ -1,4 +1,4 @@
-name: GiziBalita_LogReg
+name: gizi-balita-training
 
 conda_env: conda.yaml
 
