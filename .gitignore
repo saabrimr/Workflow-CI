@@ -17,3 +17,13 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# MLflow local artifacts
+mlruns/
+mlflow.db
+# Training outputs
+MLProject/metric_info.json
+MLProject/training_confusion_matrix.png
+# Virtual env
+.venv/
+
