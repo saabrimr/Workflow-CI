@@ -4,6 +4,7 @@ venv/
 # MLflow
 mlruns/
 mlartifacts/
+mlflow.db
 
 # Model artifacts
 model.joblib
@@ -11,6 +12,7 @@ model.joblib
 # Python cache
 __pycache__/
 *.pyc
+.venv/
 
 # OS files
 .DS_Store
