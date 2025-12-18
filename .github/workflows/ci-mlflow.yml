@@ -22,9 +22,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install mlflow
 
       - name: Train ML model
+        env:
+          MLFLOW_TRACKING_URI: "file:./mlruns"
         run: |
           python MLProject/modelling.py
 
